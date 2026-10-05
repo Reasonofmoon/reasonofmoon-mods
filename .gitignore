@@ -1,0 +1,5 @@
+# written by Claude Code when a mod loads; regenerate locally
+**/.claude-plugin/types/
+plugins/*/tsconfig.json
+node_modules/
+.DS_Store

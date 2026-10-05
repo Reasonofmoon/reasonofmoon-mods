@@ -1,0 +1,18 @@
+{
+  "name": "reasonofmoon-mods",
+  "owner": { "name": "Reason of Moon", "url": "https://github.com/Reasonofmoon" },
+  "metadata": {
+    "description": "Claude Code mods that verify an agent's work instead of trusting its report",
+    "version": "0.1.0"
+  },
+  "plugins": [
+    {
+      "name": "silent-failure",
+      "source": "./plugins/silent-failure",
+      "description": "Flags Bash commands that exit 0 but whose output shows failures, skipped tests or errors",
+      "version": "0.1.0",
+      "category": "development",
+      "keywords": ["mod", "testing", "verification", "bash"]
+    }
+  ]
+}

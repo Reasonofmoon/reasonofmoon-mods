@@ -1,0 +1,57 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  :root { --bg:#0b0f14; --panel:#111821; --line:#1f2a36; --text:#e6edf3; --dim:#7d8b99;
+          --cyan:#38bdf8; --green:#22c55e; --violet:#a78bfa; --amber:#f59e0b; --red:#f87171; }
+  * { margin:0; box-sizing:border-box; }
+  body { width:1600px; height:600px; background:var(--bg); color:var(--text);
+         font-family:'Inter',sans-serif; overflow:hidden; position:relative; }
+  .grid { position:absolute; inset:0;
+    background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+    background-size:40px 40px; opacity:.35; mask-image:radial-gradient(ellipse at 30% 50%,#000 20%,transparent 75%); }
+  .left { position:absolute; left:88px; top:58px; width:640px; }
+  .kicker { font:600 15px 'DejaVu Sans Mono',monospace; letter-spacing:.28em; color:var(--cyan); }
+  h1 { font:800 84px/0.95 'Inter Display','Inter',sans-serif; letter-spacing:-.03em; margin-top:22px; }
+  h1 .z { color:var(--amber); }
+  .inv { margin-top:24px; font:600 30px 'Inter',sans-serif; color:var(--text); }
+  .inv b { color:var(--amber); }
+  .sub { margin-top:16px; font:400 19px/1.55 'Inter',sans-serif; color:var(--dim); width:560px; }
+  .chips { margin-top:30px; display:flex; gap:10px; }
+  .chip { font:600 13px 'DejaVu Sans Mono',monospace; padding:7px 12px; border-radius:999px; border:1px solid var(--line); color:var(--dim); }
+  .chip.c { color:var(--cyan); border-color:#164e63; } .chip.v { color:var(--violet); border-color:#4c1d95; } .chip.a{color:var(--amber);border-color:#78350f}
+  .term { position:absolute; right:80px; top:70px; width:740px; height:460px; background:var(--panel);
+          border:1px solid var(--line); border-radius:14px; box-shadow:0 30px 80px rgba(0,0,0,.55); overflow:hidden; }
+  .bar { height:38px; border-bottom:1px solid var(--line); display:flex; align-items:center; gap:8px; padding:0 16px; }
+  .dot { width:11px; height:11px; border-radius:50%; background:#2a3542; }
+  .bar span { margin-left:12px; font:500 13px 'DejaVu Sans Mono',monospace; color:var(--dim); }
+  pre { padding:20px 24px; font:14.5px/1.72 'DejaVu Sans Mono',monospace; color:#c9d4df; white-space:pre; }
+  .p { color:var(--cyan); } .ok { color:var(--green); } .bad { color:var(--red); font-weight:700; } .d { color:var(--dim); } .am { color:var(--amber); }
+  .status { position:absolute; left:0; right:0; bottom:0; padding:13px 24px; background:#1a1408; border-top:1px solid #78350f;
+            font:600 14.5px 'DejaVu Sans Mono',monospace; color:var(--amber); }
+</style></head>
+<body>
+<div class="grid"></div>
+<div class="left">
+  <div class="kicker">REASONOFMOON-MODS · CLAUDE CODE</div>
+  <h1>Silent<br>Failure <span class="z">Detector</span></h1>
+  <div class="inv">Exit <b>0</b> is not evidence.</div>
+  <div class="sub">A Claude Code mod that reads what a command printed, not just how it exited, and tells both you and Claude when “success” says otherwise.</div>
+  <div class="chips"><div class="chip c">tool.call · Bash</div><div class="chip v">status · log · context</div><div class="chip a">/silent-failure</div></div>
+</div>
+<div class="term">
+  <div class="bar"><div class="dot"></div><div class="dot"></div><div class="dot"></div><span>claude · Bash(npm test | tail -n 20)</span></div>
+<pre><span class="ok">PASS</span> src/math.test.js
+<span class="bad">FAIL</span> src/auth.test.js
+  ● login › rejects bad password
+<span class="d">    expect(received).toBe(expected)</span>
+
+Tests:  <span class="bad">2 failed</span>, <span class="am">3 skipped</span>, <span class="ok">35 passed</span>, 40 total
+Time:   4.21 s
+<span class="d">─────────────────────────────────────────────</span>
+<span class="p">exit code</span>  <span class="ok">0</span>   <span class="d">← the shell says success</span>
+<span class="p">Claude reads</span> <span class="am">silent-failure: exited 0, but output shows</span>
+             <span class="am">  - failed tests or errors: "2 failed"</span>
+             <span class="am">  - exit code masked by `| tail`</span></pre>
+  <div class="status">⚠ exit 0 but failure: failed tests or errors · /silent-failure last</div>
+</div>
+</body></html>

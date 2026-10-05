@@ -1,0 +1,41 @@
+<!doctype html>
+<html><head><meta charset="utf-8">
+<style>
+  :root { --bg:#0b0f14; --panel:#111821; --line:#1f2a36; --text:#e6edf3; --dim:#7d8b99;
+          --cyan:#38bdf8; --green:#22c55e; --violet:#a78bfa; --amber:#f59e0b; --red:#f87171; }
+  * { margin:0; box-sizing:border-box; }
+  body { width:1600px; height:410px; background:var(--bg); color:var(--text); font-family:'Inter',sans-serif; padding:44px 60px; }
+  .title { font:600 14px 'DejaVu Sans Mono',monospace; letter-spacing:.24em; color:var(--dim); }
+  .row { display:flex; align-items:stretch; margin-top:30px; }
+  .card { flex:1; background:var(--panel); border:1px solid var(--line); border-radius:14px; padding:22px 22px 20px; position:relative; }
+  .card .n { font:700 13px 'DejaVu Sans Mono',monospace; color:var(--dim); }
+  .card h3 { font:700 25px 'Inter',sans-serif; margin-top:8px; }
+  .card p { font:400 15px/1.5 'Inter',sans-serif; color:var(--dim); margin-top:10px; }
+  .card code { display:block; margin-top:14px; font:13px 'DejaVu Sans Mono',monospace; color:var(--cyan); }
+  .arrow { width:46px; display:flex; align-items:center; justify-content:center; color:#3b4a5a; font:700 26px 'Inter'; }
+  .c1 { border-top:3px solid var(--cyan); } .c2 { border-top:3px solid var(--green); } .c3 { border-top:3px solid var(--violet); }
+  .c4 { border-top:3px solid var(--amber); } .c5 { border-top:3px solid var(--red); }
+  .skip { margin-top:26px; display:flex; gap:12px; flex-wrap:wrap; }
+  .skip span { font:13px 'DejaVu Sans Mono',monospace; color:var(--dim); border:1px dashed var(--line); padding:7px 12px; border-radius:8px; }
+  .skip b { color:var(--text); font-weight:600; }
+</style></head>
+<body>
+  <div class="title">ONE HOOK · FIVE STAGES · tool.call {tool: Bash}</div>
+  <div class="row">
+    <div class="card c1"><div class="n">01</div><h3>Run</h3><p>Let the command run exactly as Claude asked.</p><code>await next(e)</code></div>
+    <div class="arrow">→</div>
+    <div class="card c2"><div class="n">02</div><h3>Gate</h3><p>Errored, denied, interrupted or backgrounded? Pass through untouched.</p><code>!isError · !deny</code></div>
+    <div class="arrow">→</div>
+    <div class="card c3"><div class="n">03</div><h3>Read</h3><p>Scan stdout + stderr against 15 rules; counts must be ≥ 1.</p><code>scan(text, mode)</code></div>
+    <div class="arrow">→</div>
+    <div class="card c4"><div class="n">04</div><h3>Show</h3><p>Pin a status line, write one log line, keep the report.</p><code>$.ui.status · $.store</code></div>
+    <div class="arrow">→</div>
+    <div class="card c5"><div class="n">05</div><h3>Tell</h3><p>Append a note Claude reads right after the tool result.</p><code>{ ...ran, context }</code></div>
+  </div>
+  <div class="skip">
+    <span><b>exit ≠ 0</b> → already an error, skipped</span>
+    <span><b>0 failed · 0 skipped</b> → not flagged</span>
+    <span><b>| tail · || true · ; exit 0</b> → masking noted</span>
+    <span><b>strict</b> → warnings + deprecations sent too</span>
+  </div>
+</body></html>
