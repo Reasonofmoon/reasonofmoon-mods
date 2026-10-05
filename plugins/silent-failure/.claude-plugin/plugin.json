@@ -1,7 +1,7 @@
 {
   "name": "silent-failure",
   "displayName": "Silent Failure Detector",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Flags Bash commands that exit 0 but whose output shows failures, skipped tests or errors",
   "author": { "name": "Reason of Moon", "url": "https://github.com/Reasonofmoon" },
   "homepage": "https://github.com/Reasonofmoon/reasonofmoon-mods/tree/main/plugins/silent-failure",

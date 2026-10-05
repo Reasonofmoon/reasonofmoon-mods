@@ -187,7 +187,7 @@ export const register: Register = on => {
     const high = findings.filter(f => f.severity === 'high').length
     const top = findings[0]?.label ?? 'suspicious output'
     $.ui.status(`⚠ exit 0 but ${high > 0 ? 'failure' : 'warning'}: ${top} · /silent-failure last`)
-    $.ui.log(`silent-failure: ${shorten(e.command)} exited 0 but shows ${findings.map(f => f.label).join(', ')}`)
+    $.ui.log(`${shorten(e.command)} exited 0 but shows ${findings.map(f => f.label).join(', ')}`)
 
     const note = contextFor(report, mode)
     if (note === undefined) return ran
