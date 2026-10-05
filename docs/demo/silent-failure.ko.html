@@ -1,10 +1,10 @@
 <!doctype html>
-<html lang="en">
+<html lang="ko">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Silent Failure Demo</title>
-<meta name="description" content="Side-by-side simulation of a build that exits 0 with a buried test failure, with and without the Silent Failure Detector mod for Claude Code.">
+<title>숨은 실패 데모</title>
+<meta name="description" content="종료 코드 0으로 끝났지만 중간에 테스트 실패가 숨어 있는 빌드를, Claude Code의 Silent Failure Detector mod가 있을 때와 없을 때 나란히 비교하는 시뮬레이션입니다.">
 <style>
 :root{
   --bg:#f7f8fa;--panel:#ffffff;--term:#f1f3f6;--text:#0b0f14;--muted:#5b6472;--line:#d9dee5;
@@ -58,58 +58,58 @@ a{color:var(--accent)}
 </head>
 <body>
 <main>
-  <p class="hint" style="margin:0 0 12px">English · <a href="silent-failure.ko.html">한국어</a></p>
-  <h1>Silent Failure Detector: a side-by-side demo</h1>
-  <p class="lede">Both terminals run the same <code>build.sh</code>. It prints 240 lines ending in <code>Done in 4.2s ✓</code> and exits <code>0</code>, but one failing test is buried in the middle. Only the right side has the mod installed.</p>
+  <p class="hint" style="margin:0 0 12px"><a href="silent-failure.html">English</a> · 한국어</p>
+  <h1>Silent Failure Detector 나란히 비교 데모</h1>
+  <p class="lede">두 터미널은 같은 <code>build.sh</code>를 실행합니다. 240줄을 출력하고 <code>Done in 4.2s ✓</code>로 끝나며 종료 코드도 <code>0</code>이지만, 중간에 실패한 테스트가 한 줄 숨어 있습니다. mod는 오른쪽에만 설치되어 있습니다.</p>
 
   <div class="bar">
-    <button class="primary" id="run">▶ Run build.sh</button>
-    <button id="reset">Reset</button>
-    <span class="hint">This is a browser simulation of what you see in Claude Code. Nothing runs on your machine.</span>
+    <button class="primary" id="run">▶ build.sh 실행</button>
+    <button id="reset">초기화</button>
+    <span class="hint">Claude Code에서 보이는 화면을 브라우저에서 흉내 낸 것입니다. 내 컴퓨터에서는 아무것도 실행되지 않습니다.</span>
   </div>
 
   <div class="grid">
     <section class="col" data-mod="off">
-      <h2>Without the mod <span class="tag">plain Claude Code</span></h2>
+      <h2>mod 없음 <span class="tag">기본 Claude Code</span></h2>
       <div class="term">
         <div class="prompt">$ ./build.sh</div>
         <div class="log"></div>
         <div class="exit"></div>
         <div class="tline"></div>
       </div>
-      <div class="status">Status line under the prompt</div>
+      <div class="status">프롬프트 아래 상태줄</div>
       <div class="cards">
-        <div class="card"><div class="k">What you see at a glance</div><div class="v you">–</div></div>
-        <div class="card"><div class="k">What Claude receives</div><div class="v claude">–</div></div>
+        <div class="card"><div class="k">한눈에 보이는 것</div><div class="v you">–</div></div>
+        <div class="card"><div class="k">Claude가 받는 것</div><div class="v claude">–</div></div>
       </div>
     </section>
 
     <section class="col" data-mod="on">
-      <h2>With the mod <span class="tag">silent-failure on</span></h2>
+      <h2>mod 있음 <span class="tag">silent-failure 켜짐</span></h2>
       <div class="term">
         <div class="prompt">$ ./build.sh</div>
         <div class="log"></div>
         <div class="exit"></div>
         <div class="tline"></div>
       </div>
-      <div class="status">Status line under the prompt</div>
+      <div class="status">프롬프트 아래 상태줄</div>
       <div class="cards">
-        <div class="card"><div class="k">What you see at a glance</div><div class="v you">–</div></div>
-        <div class="card"><div class="k">What Claude receives</div><div class="v claude">–</div></div>
+        <div class="card"><div class="k">한눈에 보이는 것</div><div class="v you">–</div></div>
+        <div class="card"><div class="k">Claude가 받는 것</div><div class="v claude">–</div></div>
       </div>
     </section>
   </div>
 
-  <p class="find" id="find" hidden>After the run, scroll either log to look for the failure yourself. It's on line 121 of 242: <code>[test] auth.spec.ts: 1 failed, 46 passed</code>.</p>
+  <p class="find" id="find" hidden>실행이 끝나면 어느 쪽 로그든 스크롤해서 실패를 직접 찾아보세요. 242줄 중 121번째 줄에 있습니다: <code>[test] auth.spec.ts: 1 failed, 46 passed</code>.</p>
 
   <div class="note">
-    <h3>What this demo does and doesn't claim</h3>
-    <p>The mod doesn't recolor lines in the log. It adds the two things shown on the right: a warning in the status line and one line in the transcript. It also attaches a note to the tool result, so Claude checks the output before calling the step done.</p>
-    <p>In the recorded A/B runs, Claude also caught this failure without the mod. The main gain is that you see the warning without reading the log, plus a second check in case Claude misses one. See the <a href="https://github.com/Reasonofmoon/reasonofmoon-mods/blob/main/examples/silent-failure/RUN-2026-10-05.md">run log</a>.</p>
-    <p>Try the real thing in Claude Code (v2.1.287 or later):</p>
+    <h3>이 데모가 보여주는 것과 보여주지 않는 것</h3>
+    <p>mod는 로그 안의 줄에 색을 칠하지 않습니다. 오른쪽에 보이는 두 가지, 즉 상태줄 경고와 대화창의 경고 한 줄을 더합니다. 또 도구 실행 결과에 메모를 붙여서, Claude가 "완료"라고 말하기 전에 출력을 다시 확인하게 합니다.</p>
+    <p>기록된 A/B 실험에서는 mod가 없어도 Claude가 이 실패를 찾아냈습니다. 가장 큰 이점은 로그를 읽지 않아도 경고가 바로 보인다는 점이고, Claude가 놓칠 경우를 대비한 이중 확인 역할도 합니다. 자세한 내용은 <a href="https://github.com/Reasonofmoon/reasonofmoon-mods/blob/main/examples/silent-failure/RUN-2026-10-05.md">실행 기록</a>을 보세요.</p>
+    <p>실제 Claude Code(v2.1.287 이상)에서 써보려면:</p>
 <pre class="install">claude plugin marketplace add Reasonofmoon/reasonofmoon-mods
 claude plugin install silent-failure@reasonofmoon-mods</pre>
-    <p><a href="https://github.com/Reasonofmoon/reasonofmoon-mods">Back to the repository</a></p>
+    <p><a href="https://github.com/Reasonofmoon/reasonofmoon-mods">저장소로 돌아가기</a></p>
   </div>
 </main>
 
@@ -137,7 +137,7 @@ claude plugin install silent-failure@reasonofmoon-mods</pre>
       q(col, '.tline').textContent = '';
       var s = q(col, '.status');
       s.className = 'status';
-      s.textContent = 'Status line under the prompt';
+      s.textContent = '프롬프트 아래 상태줄';
       q(col, '.you').textContent = '–';
       q(col, '.claude').textContent = '–';
     });
@@ -151,18 +151,18 @@ claude plugin install silent-failure@reasonofmoon-mods</pre>
       log.textContent = lines.join('\n');
       log.classList.add('done');
       log.scrollTop = log.scrollHeight;
-      q(col, '.exit').textContent = 'exit code 0';
+      q(col, '.exit').textContent = '종료 코드 0';
       var s = q(col, '.status');
       if (on) {
         q(col, '.tline').textContent = '● silent-failure: ./build.sh exited 0 but shows failed tests or errors';
         s.className = 'status alarm';
         s.textContent = '⚠ exit 0 but failure: failed tests or errors · /silent-failure last';
-        q(col, '.you').innerHTML = '<span class="badtxt">A failure warning, without reading the log</span>';
-        q(col, '.claude').innerHTML = '<span class="badtxt">The output, plus a note: exited 0 but shows failed tests</span>';
+        q(col, '.you').innerHTML = '<span class="badtxt">로그를 읽지 않아도 실패 경고가 보임</span>';
+        q(col, '.claude').innerHTML = '<span class="badtxt">출력 + 메모: 종료 코드는 0이지만 테스트 실패가 있음</span>';
       } else {
-        s.textContent = 'Status line under the prompt (nothing shown)';
-        q(col, '.you').innerHTML = '<span class="good">A green ✓ on the last line</span>';
-        q(col, '.claude').textContent = 'Only the output: one failing line among 242';
+        s.textContent = '프롬프트 아래 상태줄 (아무것도 안 뜸)';
+        q(col, '.you').innerHTML = '<span class="good">마지막 줄의 초록색 ✓</span>';
+        q(col, '.claude').textContent = '출력만: 242줄 중 실패 한 줄을 직접 찾아야 함';
       }
     });
   }
