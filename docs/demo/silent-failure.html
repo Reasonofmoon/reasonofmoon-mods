@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Silent Failure Demo</title>
+<meta name="description" content="Side-by-side simulation of a build that exits 0 with a buried test failure, with and without the Silent Failure Detector mod for Claude Code.">
+<style>
+:root{
+  --bg:#f7f8fa;--panel:#ffffff;--term:#f1f3f6;--text:#0b0f14;--muted:#5b6472;--line:#d9dee5;
+  --ok:#15803d;--bad:#b91c1c;--bad-bg:#fdecec;--bad-line:#f3b4b4;--accent:#0369a1;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans KR",sans-serif;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0b0f14;--panel:#111821;--term:#0e141c;--text:#e6edf3;--muted:#8b97a7;--line:#223040;
+  --ok:#4ade80;--bad:#f87171;--bad-bg:#2a1414;--bad-line:#5b2323;--accent:#38bdf8;
+}}
+:root[data-theme="dark"]{
+  --bg:#0b0f14;--panel:#111821;--term:#0e141c;--text:#e6edf3;--muted:#8b97a7;--line:#223040;
+  --ok:#4ade80;--bad:#f87171;--bad-bg:#2a1414;--bad-line:#5b2323;--accent:#38bdf8;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.6}
+main{max-width:1040px;margin:0 auto;padding:32px 16px 48px}
+h1{font-size:24px;font-weight:600;margin:0 0 6px}
+.lede{color:var(--muted);margin:0 0 20px;max-width:720px}
+code{font-family:var(--mono);font-size:.92em}
+.bar{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 16px}
+button{font:inherit;font-size:14px;padding:8px 16px;border-radius:8px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer}
+button.primary{border-color:var(--accent);color:var(--accent)}
+button:hover{border-color:var(--muted)}
+.hint{font-size:13px;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+@media (max-width:760px){.grid{grid-template-columns:minmax(0,1fr)}}
+.col h2{font-size:15px;font-weight:600;margin:0 0 8px;display:flex;gap:8px;align-items:center}
+.tag{font-size:12px;font-weight:500;padding:2px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+.term{background:var(--term);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-family:var(--mono);font-size:12px;line-height:1.55}
+.log{height:190px;overflow:hidden;color:var(--muted);white-space:pre;overflow-x:hidden}
+.log.done{overflow-y:auto}
+.prompt{color:var(--text)}
+.exit{color:var(--ok);min-height:19px}
+.tline{min-height:19px;color:var(--bad);white-space:pre-wrap;word-break:break-word}
+.status{margin-top:8px;min-height:40px;border-radius:8px;padding:9px 12px;font-size:13px;border:1px solid var(--line);color:var(--muted);background:var(--panel)}
+.status.alarm{background:var(--bad-bg);border-color:var(--bad-line);color:var(--bad)}
+.cards{display:grid;grid-template-columns:minmax(0,1fr);gap:8px;margin-top:8px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.card .k{font-size:12px;color:var(--muted)}
+.card .v{font-size:14px;font-weight:500;margin-top:2px;min-height:22px}
+.good{color:var(--ok)}.badtxt{color:var(--bad)}
+.find{margin-top:20px;font-size:14px;color:var(--muted)}
+.note{margin-top:28px;padding:14px 16px;border:1px solid var(--line);border-radius:12px;background:var(--panel);font-size:14px}
+.note h3{font-size:14px;margin:0 0 6px}
+.note p{margin:6px 0}
+pre.install{background:var(--term);border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-family:var(--mono);font-size:12px;overflow-x:auto}
+a{color:var(--accent)}
+</style>
+</head>
+<body>
+<main>
+  <h1>Silent Failure Detector: a side-by-side demo</h1>
+  <p class="lede">Both terminals run the same <code>build.sh</code>. It prints 240 lines ending in <code>Done in 4.2s ✓</code> and exits <code>0</code>, but one failing test is buried in the middle. Only the right side has the mod installed.</p>
+
+  <div class="bar">
+    <button class="primary" id="run">▶ Run build.sh</button>
+    <button id="reset">Reset</button>
+    <span class="hint">This is a browser simulation of what you see in Claude Code. Nothing runs on your machine.</span>
+  </div>
+
+  <div class="grid">
+    <section class="col" data-mod="off">
+      <h2>Without the mod <span class="tag">plain Claude Code</span></h2>
+      <div class="term">
+        <div class="prompt">$ ./build.sh</div>
+        <div class="log"></div>
+        <div class="exit"></div>
+        <div class="tline"></div>
+      </div>
+      <div class="status">Status line under the prompt</div>
+      <div class="cards">
+        <div class="card"><div class="k">What you see at a glance</div><div class="v you">–</div></div>
+        <div class="card"><div class="k">What Claude receives</div><div class="v claude">–</div></div>
+      </div>
+    </section>
+
+    <section class="col" data-mod="on">
+      <h2>With the mod <span class="tag">silent-failure on</span></h2>
+      <div class="term">
+        <div class="prompt">$ ./build.sh</div>
+        <div class="log"></div>
+        <div class="exit"></div>
+        <div class="tline"></div>
+      </div>
+      <div class="status">Status line under the prompt</div>
+      <div class="cards">
+        <div class="card"><div class="k">What you see at a glance</div><div class="v you">–</div></div>
+        <div class="card"><div class="k">What Claude receives</div><div class="v claude">–</div></div>
+      </div>
+    </section>
+  </div>
+
+  <p class="find" id="find" hidden>After the run, scroll either log to look for the failure yourself. It's on line 121 of 242: <code>[test] auth.spec.ts: 1 failed, 46 passed</code>.</p>
+
+  <div class="note">
+    <h3>What this demo does and doesn't claim</h3>
+    <p>The mod doesn't recolor lines in the log. It adds the two things shown on the right: a warning in the status line and one line in the transcript. It also attaches a note to the tool result, so Claude checks the output before calling the step done.</p>
+    <p>In the recorded A/B runs, Claude also caught this failure without the mod. The main gain is that you see the warning without reading the log, plus a second check in case Claude misses one. See the <a href="https://github.com/Reasonofmoon/reasonofmoon-mods/blob/main/examples/silent-failure/RUN-2026-10-05.md">run log</a>.</p>
+    <p>Try the real thing in Claude Code (v2.1.287 or later):</p>
+<pre class="install">claude plugin marketplace add Reasonofmoon/reasonofmoon-mods
+claude plugin install silent-failure@reasonofmoon-mods</pre>
+    <p><a href="https://github.com/Reasonofmoon/reasonofmoon-mods">Back to the repository</a></p>
+  </div>
+</main>
+
+<script>
+(function () {
+  var lines = [];
+  for (var i = 1; i <= 120; i++) lines.push('[build] compiled module_' + i + '.ts (ok)');
+  lines.push('[test] auth.spec.ts: 1 failed, 46 passed');
+  for (var j = 121; j <= 240; j++) lines.push('[build] bundled chunk_' + j + '.js (ok)');
+  lines.push('Done in 4.2s ✓');
+
+  var cols = Array.prototype.slice.call(document.querySelectorAll('.col'));
+  var timer = null;
+
+  function q(col, sel) { return col.querySelector(sel); }
+
+  function reset() {
+    clearInterval(timer);
+    document.getElementById('find').hidden = true;
+    cols.forEach(function (col) {
+      var log = q(col, '.log');
+      log.textContent = '';
+      log.classList.remove('done');
+      q(col, '.exit').textContent = '';
+      q(col, '.tline').textContent = '';
+      var s = q(col, '.status');
+      s.className = 'status';
+      s.textContent = 'Status line under the prompt';
+      q(col, '.you').textContent = '–';
+      q(col, '.claude').textContent = '–';
+    });
+  }
+
+  function finish() {
+    document.getElementById('find').hidden = false;
+    cols.forEach(function (col) {
+      var on = col.getAttribute('data-mod') === 'on';
+      var log = q(col, '.log');
+      log.textContent = lines.join('\n');
+      log.classList.add('done');
+      log.scrollTop = log.scrollHeight;
+      q(col, '.exit').textContent = 'exit code 0';
+      var s = q(col, '.status');
+      if (on) {
+        q(col, '.tline').textContent = '● silent-failure: ./build.sh exited 0 but shows failed tests or errors';
+        s.className = 'status alarm';
+        s.textContent = '⚠ exit 0 but failure: failed tests or errors · /silent-failure last';
+        q(col, '.you').innerHTML = '<span class="badtxt">A failure warning, without reading the log</span>';
+        q(col, '.claude').innerHTML = '<span class="badtxt">The output, plus a note: exited 0 but shows failed tests</span>';
+      } else {
+        s.textContent = 'Status line under the prompt (nothing shown)';
+        q(col, '.you').innerHTML = '<span class="good">A green ✓ on the last line</span>';
+        q(col, '.claude').textContent = 'Only the output: one failing line among 242';
+      }
+    });
+  }
+
+  document.getElementById('reset').addEventListener('click', reset);
+  document.getElementById('run').addEventListener('click', function () {
+    reset();
+    var k = 0;
+    timer = setInterval(function () {
+      for (var n = 0; n < 6 && k < lines.length; n++, k++) {
+        cols.forEach(function (col) {
+          var log = q(col, '.log');
+          log.textContent += (log.textContent ? '\n' : '') + lines[k];
+          var rows = log.textContent.split('\n');
+          if (rows.length > 11) log.textContent = rows.slice(-11).join('\n');
+        });
+      }
+      if (k >= lines.length) { clearInterval(timer); finish(); }
+    }, 35);
+  });
+})();
+</script>
+</body>
+</html>

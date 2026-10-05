@@ -7,6 +7,8 @@
   &nbsp;·&nbsp;
   <a href="#see-it-fire"><strong>See it fire</strong></a>
   &nbsp;·&nbsp;
+  <a href="https://reasonofmoon.github.io/reasonofmoon-mods/demo/silent-failure.html"><strong>Try the live demo</strong></a>
+  &nbsp;·&nbsp;
   <a href="#why-this-wins-falsifiable"><strong>Why this wins</strong></a>
   &nbsp;·&nbsp;
   <a href="#worked-ab-2026-10-05-kst"><strong>A/B log</strong></a>
@@ -53,6 +55,8 @@ The first mod is the **Silent Failure Detector**. A command can print `2 failed`
 <a id="see-it-fire"></a>
 
 ## See it fire
+
+> **Try it in your browser:** [side-by-side demo](https://reasonofmoon.github.io/reasonofmoon-mods/demo/silent-failure.html). The same `build.sh` runs with and without the mod. Nothing is installed.
 
 A real Claude Code 2.1.289 turn. The script exits 0. These lines are verbatim from the engine's event stream:
 
