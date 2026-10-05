@@ -10,6 +10,8 @@ When it finds one, it:
 
 It also notes when the command itself can hide a failing exit code (`|| true`, `| tail`, `| tee`, `; exit 0`).
 
+Try it in your browser first: [live demo](https://reasonofmoon.github.io/reasonofmoon-mods/demo/silent-failure.html) · [한국어 데모](https://reasonofmoon.github.io/reasonofmoon-mods/demo/silent-failure.ko.html).
+
 Requires **Claude Code v2.1.287 or later** (tested on 2.1.289).
 
 Real-run log and A/B results: [examples/silent-failure/RUN-2026-10-05.md](../../examples/silent-failure/RUN-2026-10-05.md). Part of [reasonofmoon-mods](../../README.md).

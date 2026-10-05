@@ -9,6 +9,8 @@
   &nbsp;·&nbsp;
   <a href="https://reasonofmoon.github.io/reasonofmoon-mods/demo/silent-failure.html"><strong>Try the live demo</strong></a>
   &nbsp;·&nbsp;
+  <a href="https://reasonofmoon.github.io/reasonofmoon-mods/demo/silent-failure.ko.html"><strong>한국어 데모</strong></a>
+  &nbsp;·&nbsp;
   <a href="#why-this-wins-falsifiable"><strong>Why this wins</strong></a>
   &nbsp;·&nbsp;
   <a href="#worked-ab-2026-10-05-kst"><strong>A/B log</strong></a>
